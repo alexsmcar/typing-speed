@@ -12,12 +12,18 @@ export default function medirVelocidade() {
                 letraAtual.previousElementSibling.classList.remove("rightLetra");
                 letraAtual.previousElementSibling.classList.remove("wrongLetra");
                 letraAtual.previousElementSibling.classList.add("currentLetra");
-            }
-            if (letraIdx - 1 > 0) {
                 letraIdx--;
             }
             else {
-                palavraIdx--;
+                const previusWord = palavras[palavraIdx - 1].querySelectorAll(".letraText");
+                if (previusWord.length) {
+                    const previusLetra = previusWord[previusWord.length - 1];
+                    previusLetra.classList.remove("rightLetra");
+                    previusLetra.classList.remove("wrongLetra");
+                    previusLetra.classList.add("currentLetra");
+                    palavraIdx--;
+                    letraIdx = previusWord.length - 1;
+                }
             }
         }
         else if (!(event.code === "ShiftLeft" || event.code === "ShiftRight")) {
