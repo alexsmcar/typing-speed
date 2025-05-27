@@ -1,0 +1,65 @@
+.teste {
+  /* background-color: blue; */
+
+  width: 800px;
+  height: 400px;
+  margin: 0 auto;
+  border-radius: 8px;
+  border: 2px solid #c1c1c1;
+  margin-top: 50px;
+  padding: 15px;
+}
+#textContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-family: "Roboto";
+  color: #222222;
+  font-size: 1.5rem;
+}
+
+.palavra {
+  display: flex;
+  height: max-content;
+  gap: 2px;
+}
+
+.letraText {
+  padding: 5px 2px;
+  background-color: transparent;
+  border-radius: 4px;
+  min-width: 15px;
+  text-align: center;
+}
+
+.rightLetra {
+  color: var(--verdeRight);
+  background-color: var(--verdeBackground);
+}
+
+.wrongLetra {
+  color: var(--vermelhoWrong);
+  background-color: var(--vermelhoBackground);
+}
+.currentLetra {
+  color: var(--azulActive);
+}
+
+.currentLetra::after {
+  content: "";
+  display: block;
+  height: 2px;
+  width: 100%;
+  animation: animeLetra 2.5s infinite ease-in;
+}
+
+@keyframes animeLetra {
+  0%, 100% {
+    opacity: 1;
+    background-color:  var(--azulActive);
+  }
+  50% {
+    opacity: 0;
+    background-color: transparent;
+  }
+}
