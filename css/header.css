@@ -1,0 +1,30 @@
+.header-bg {
+    padding: 0 10px;
+    background: #00ACFF;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+}
+
+header h1 {
+    font-size: 1.25rem;
+}
+
+#reset {
+    max-width: 1rem;
+    display: block;
+    transition: .3s;
+    cursor: pointer;
+}
+
+#reset:hover {
+    transform: rotate(360deg);
+}
+
+.tempo {
+    display: flex;
+    gap: 15px;
+    height: max-content;
+}

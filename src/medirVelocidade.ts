@@ -1,50 +1,83 @@
 export default function medirVelocidade() {
+  let acertos = 0;
+  let erros = 0;
   let palavraIdx = 0;
   let letraIdx = 0;
+  let letraAnterior = "";
+  const classeAtual = "currentLetra";
+  const classeAcerto = "rightLetra";
+  const classeErro = "wrongLetra";
   const palavras = document.querySelectorAll(".palavra");
 
+  function voltarLetra(el: Element): void {
+    el.classList.remove(classeAcerto, classeErro);
+    el.classList.add(classeAtual);
+  }
+
+  function verificarLetra(
+    elemento: Element,
+    remover: string,
+    adicionar: string
+  ): void {
+    elemento.classList.remove(remover);
+    elemento.classList.add(adicionar);
+  }
+
+  function handleBackspace(tecla: string, letra: Element): boolean {
+    if (tecla === "Backspace") {
+      if (!(palavraIdx === 0 && letraIdx === 0)) {
+        letra.classList.remove(classeAtual);
+        if (letra.previousElementSibling) {
+          voltarLetra(letra.previousElementSibling);
+          letraIdx--;
+        } else {
+          const previusWord =
+            palavras[palavraIdx - 1].querySelectorAll(".letraText");
+
+          if (previusWord.length) {
+            const previusLetra = previusWord[previusWord.length - 1];
+            voltarLetra(previusLetra);
+            palavraIdx--;
+            letraIdx = previusWord.length - 1;
+          }
+        }
+      } return true;
+    } else return false;
+  }
+
   function handleTyping(event: KeyboardEvent) {
+    console.log(palavraIdx, letraIdx);
     const listaLetras = palavras[palavraIdx].querySelectorAll(".letraText");
     const letraAtual = listaLetras[letraIdx];
-    console.log(letraAtual);
-    if (event.code === "Backspace") {
-      letraAtual.classList.remove("currentLetra");
-      if (letraAtual.previousElementSibling) {
-        letraAtual.previousElementSibling.classList.remove("rightLetra");
-        letraAtual.previousElementSibling.classList.remove("wrongLetra");
-        letraAtual.previousElementSibling.classList.add("currentLetra");
-        letraIdx--;
-      } else {
-        const previusWord =
-          palavras[palavraIdx - 1].querySelectorAll(".letraText");
-        if (previusWord.length) {
-          const previusLetra = previusWord[previusWord.length - 1];
-          previusLetra.classList.remove("rightLetra");
-          previusLetra.classList.remove("wrongLetra");
-          previusLetra.classList.add("currentLetra");
-          palavraIdx--;
-          letraIdx = previusWord.length - 1;
-        }
-      }
-    } else if (!(event.code === "ShiftLeft" || event.code === "ShiftRight")) {
-      letraAtual.classList.remove("currentLetra");
+    letraAnterior = event.key;
+    console.log(letraAnterior, event.key);
+
+    if (event.key === "Dead") return;
+
+    if (handleBackspace(event.code, letraAtual)) return;
+
+    if (!(event.code === "ShiftLeft" || event.code === "ShiftRight")) {
+      letraAtual.classList.remove(classeAtual);
       if (letraAtual.innerHTML === event.key) {
-        letraAtual.classList.add("rightLetra");
-        letraAtual.classList.remove("wrongLetra");
+        verificarLetra(letraAtual, classeErro, classeAcerto);
+        acertos++;
       } else {
-        letraAtual.classList.add("wrongLetra");
-        letraAtual.classList.remove("rightLetra");
+        verificarLetra(letraAtual, classeAcerto, classeErro);
+        erros++;
       }
       if (letraAtual.nextElementSibling) {
-        letraAtual.nextElementSibling.classList.add("currentLetra");
+        letraAtual.nextElementSibling.classList.add(classeAtual);
       } else {
         if (palavraIdx + 1 <= palavras.length - 1) {
           palavras[palavraIdx + 1]
             .querySelector(".letraText")
-            ?.classList.add("currentLetra");
+            ?.classList.add(classeAtual);
         }
       }
-      if (letraIdx === listaLetras.length - 1) {
+      if (
+        letraIdx === listaLetras.length - 1 &&
+        palavraIdx < palavras.length - 1
+      ) {
         palavraIdx++;
         letraIdx = 0;
       } else {
@@ -52,9 +85,6 @@ export default function medirVelocidade() {
       }
     }
   }
-  if (palavraIdx <= palavras.length - 1) {
-    window.addEventListener("keyup", handleTyping);
-  } else {
-    window.removeEventListener("keyup", handleTyping);
-  }
+
+  window.addEventListener("keydown", handleTyping);
 }
