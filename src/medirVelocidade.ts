@@ -3,7 +3,6 @@ export default function medirVelocidade() {
   let erros = 0;
   let palavraIdx = 0;
   let letraIdx = 0;
-  let letraAnterior = "";
   const classeAtual = "currentLetra";
   const classeAcerto = "rightLetra";
   const classeErro = "wrongLetra";
@@ -41,16 +40,14 @@ export default function medirVelocidade() {
             letraIdx = previusWord.length - 1;
           }
         }
-      } return true;
+      }
+      return true;
     } else return false;
   }
 
   function handleTyping(event: KeyboardEvent) {
-    console.log(palavraIdx, letraIdx);
     const listaLetras = palavras[palavraIdx].querySelectorAll(".letraText");
     const letraAtual = listaLetras[letraIdx];
-    letraAnterior = event.key;
-    console.log(letraAnterior, event.key);
 
     if (event.key === "Dead") return;
 
@@ -58,7 +55,10 @@ export default function medirVelocidade() {
 
     if (!(event.code === "ShiftLeft" || event.code === "ShiftRight")) {
       letraAtual.classList.remove(classeAtual);
-      if (letraAtual.innerHTML === event.key) {
+      if (
+        letraAtual.innerHTML === event.key ||
+        (event.code === "Space" && letraAtual.innerHTML === "&nbsp;")
+      ) {
         verificarLetra(letraAtual, classeErro, classeAcerto);
         acertos++;
       } else {
@@ -74,10 +74,8 @@ export default function medirVelocidade() {
             ?.classList.add(classeAtual);
         }
       }
-      if (
-        letraIdx === listaLetras.length - 1 &&
-        palavraIdx < palavras.length - 1
-      ) {
+
+      if (letraIdx === listaLetras.length - 1) {
         palavraIdx++;
         letraIdx = 0;
       } else {

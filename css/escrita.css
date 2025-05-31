@@ -1,21 +1,24 @@
 .teste {
   /* background-color: blue; */
 
-  width: 800px;
+max-width: 900px;
   height: 400px;
   margin: 0 auto;
   border-radius: 8px;
-  border: 2px solid #c1c1c1;
+  border: 2px solid #9193a8;
   margin-top: 50px;
   padding: 15px;
+  overflow: hidden;
+  background-color: #26273b;
+  /* background-color: #141526; */
 }
 #textContainer {
   display: flex;
   flex-wrap: wrap;
-  gap: 5px;
-  font-family: "Roboto";
-  color: #222222;
+  font-family: "Fira code";
   font-size: 1.5rem;
+  gap: 2px;
+  overflow: hidden;
 }
 
 .palavra {
@@ -31,6 +34,7 @@
   border-radius: 4px;
   min-width: 15px;
   text-align: center;
+  color: white;
 }
 
 .rightLetra {
@@ -44,20 +48,23 @@
 }
 .currentLetra {
   color: var(--azulActive);
+  position: relative;
 }
 
 .currentLetra::after {
   content: "";
   display: block;
+  position: absolute;
   height: 2px;
   width: 100%;
   animation: animeLetra 2.5s infinite ease-in;
 }
 
 @keyframes animeLetra {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
-    background-color:  var(--azulActive);
+    background-color: var(--azulActive);
   }
   50% {
     opacity: 0;
