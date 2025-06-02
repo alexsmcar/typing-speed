@@ -1,12 +1,12 @@
+import iniciarCronometro from "./cronometro.js";
 export default function medirVelocidade() {
-    let acertos = 0;
-    let erros = 0;
     let palavraIdx = 0;
     let letraIdx = 0;
     const classeAtual = "currentLetra";
     const classeAcerto = "rightLetra";
     const classeErro = "wrongLetra";
     const palavras = document.querySelectorAll(".palavra");
+    const cronometro = document.getElementById("cronometro");
     function voltarLetra(el) {
         el.classList.remove(classeAcerto, classeErro);
         el.classList.add(classeAtual);
@@ -50,11 +50,9 @@ export default function medirVelocidade() {
             if (letraAtual.innerHTML === event.key ||
                 (event.code === "Space" && letraAtual.innerHTML === "&nbsp;")) {
                 verificarLetra(letraAtual, classeErro, classeAcerto);
-                acertos++;
             }
             else {
                 verificarLetra(letraAtual, classeAcerto, classeErro);
-                erros++;
             }
             if (letraAtual.nextElementSibling) {
                 letraAtual.nextElementSibling.classList.add(classeAtual);
@@ -76,5 +74,10 @@ export default function medirVelocidade() {
         }
     }
     window.addEventListener("keydown", handleTyping);
+    window.addEventListener("keydown", () => {
+        if (cronometro) {
+            iniciarCronometro(cronometro);
+        }
+    }, { once: true });
 }
 //# sourceMappingURL=medirVelocidade.js.map

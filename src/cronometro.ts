@@ -1,3 +1,5 @@
+import mostrarResultado from "./mostarResultado.js";
+
 export default function iniciarCronometro(element: HTMLElement) {
   const tempo = Number(element.innerText.replace(":", "")) * 600;
   let tempoAtual = tempo;
@@ -5,10 +7,11 @@ export default function iniciarCronometro(element: HTMLElement) {
   const relogio = setInterval(() => {
     if (tempoAtual === 1000) {
         clearInterval(relogio);
+        mostrarResultado();
     }
     tempoAtual -= 1000;
     element.innerText = msToMinutos(tempoAtual);
-  }, 1000);
+  }, 100);
 }
 
 function msToMinutos(ms: number): string {
