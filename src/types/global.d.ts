@@ -5,4 +5,10 @@ declare global {
     acertos: number;
     erros: number;
   }
+
+  interface ElementIndex {
+    palavra: number;
+    letra: number;
+  }
 }
+

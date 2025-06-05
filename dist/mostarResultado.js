@@ -1,8 +1,15 @@
-export default function mostrarResultado() {
+export default function mostrarResultado(teste) {
     const container = document.getElementById("textContainer");
+    const resultados = realizarContagem();
+    const wpm = (resultados.acertos + resultados.erros) / 5;
+    console.log("acertos: ", teste.acertos, "erros: ", teste.erros);
+    console.log("acertos: ", resultados.acertos, "erros: ", resultados.erros);
+    console.log(wpm);
+}
+function realizarContagem() {
     const resultado = {
         acertos: 0,
-        erros: 0
+        erros: 0,
     };
     const palavras = document.querySelectorAll(".palavra");
     palavras?.forEach((palavra) => {
@@ -16,9 +23,6 @@ export default function mostrarResultado() {
             }
         });
     });
-    if (container) {
-        container.innerHTML = "";
-    }
-    console.log(resultado);
+    return resultado;
 }
 //# sourceMappingURL=mostarResultado.js.map

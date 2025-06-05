@@ -1,27 +1,27 @@
-export default function mostrarResultado(): void {
-    const container = document.getElementById("textContainer");
-    const resultado: Resultado = {
-        acertos: 0,
-        erros: 0
-    }
-    const palavras = document.querySelectorAll(".palavra");
-    palavras?.forEach((palavra) => {
-        const letras = palavra.querySelectorAll(".letraText");
-        letras?.forEach((letra) => {
-            if (letra.classList.contains("wrongLetra")) {
-                resultado.erros++
-            } else if (letra.classList.contains("rightLetra")) {
-                resultado.acertos++
-            }
-        })
-    })
+export default function mostrarResultado(teste: Resultado): void {
+  const container = document.getElementById("textContainer");
+  const resultados = realizarContagem();
+  const wpm = (resultados.acertos + resultados.erros) / 5;
+  console.log("acertos: ", teste.acertos, "erros: ", teste.erros)
+  console.log("acertos: ", resultados.acertos, "erros: ", resultados.erros)
+  console.log(wpm)
+}
 
-    if (container) {
-        container.innerHTML = ""
-    }
-
-    console.log(resultado)
-    
-
-    
-} 
+function realizarContagem() {
+  const resultado: Resultado = {
+    acertos: 0,
+    erros: 0,
+  };
+  const palavras = document.querySelectorAll(".palavra");
+  palavras?.forEach((palavra) => {
+    const letras = palavra.querySelectorAll(".letraText");
+    letras?.forEach((letra) => {
+      if (letra.classList.contains("wrongLetra")) {
+        resultado.erros++;
+      } else if (letra.classList.contains("rightLetra")) {
+        resultado.acertos++;
+      }
+    });
+  });
+  return resultado
+}
