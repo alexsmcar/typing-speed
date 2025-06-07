@@ -21,6 +21,7 @@ export function medirVelocidade() {
     const values = {
         acertos: 0,
         erros: 0,
+        totalTeclasPressionadas: 0
     };
     typingListener = (event) => handleTyping(event, palavras, elementIndex, values);
     window.addEventListener("keydown", typingListener);
@@ -35,19 +36,19 @@ export function removeTypingListener() {
         window.removeEventListener("keydown", typingListener);
     }
 }
-function handleBackspace(tecla, letra, indexes, listaPalavras) {
+function handleBackspace(tecla, letra, indexes, listaPalavras, resultado) {
     if (tecla === "Backspace") {
         if (!(indexes.palavra === 0 && indexes.letra === 0)) {
             letra.classList.remove(classeAtual);
             if (letra.previousElementSibling) {
-                voltarLetra(letra.previousElementSibling);
+                voltarLetra(letra.previousElementSibling, resultado);
                 indexes.letra--;
             }
             else {
                 const previusWord = listaPalavras[indexes.palavra - 1].querySelectorAll(".letraText");
                 if (previusWord.length) {
                     const previusLetra = previusWord[previusWord.length - 1];
-                    voltarLetra(previusLetra);
+                    voltarLetra(previusLetra, resultado);
                     indexes.palavra--;
                     indexes.letra = previusWord.length - 1;
                 }
@@ -57,7 +58,11 @@ function handleBackspace(tecla, letra, indexes, listaPalavras) {
     }
     return false;
 }
-function voltarLetra(el) {
+function voltarLetra(el, resultado) {
+    if (el.classList.contains(classeAcerto))
+        resultado.acertos--;
+    else if (el.classList.contains(classeErro))
+        resultado.erros--;
     el.classList.remove(classeAcerto, classeErro);
     el.classList.add(classeAtual);
 }
@@ -65,22 +70,23 @@ function verificarLetra(elemento, remover, adicionar) {
     elemento.classList.remove(remover);
     elemento.classList.add(adicionar);
 }
-function handleTyping(event, listaPalavras, index, teste) {
+function handleTyping(event, listaPalavras, index, resultado) {
     const listaLetras = listaPalavras[index.palavra].querySelectorAll(".letraText");
     const letraAtual = listaLetras[index.letra];
     if (LetrasIgnorar.has(event.key))
         return;
-    if (handleBackspace(event.code, letraAtual, index, listaPalavras))
+    if (handleBackspace(event.code, letraAtual, index, listaPalavras, resultado))
         return;
     letraAtual.classList.remove(classeAtual);
+    resultado.totalTeclasPressionadas++;
     if (letraAtual.innerHTML === event.key ||
         (event.code === "Space" && letraAtual.innerHTML === "&nbsp;")) {
         verificarLetra(letraAtual, classeErro, classeAcerto);
-        teste.acertos++;
+        resultado.acertos++;
     }
     else {
         verificarLetra(letraAtual, classeAcerto, classeErro);
-        teste.erros++;
+        resultado.erros++;
     }
     if (letraAtual.nextElementSibling) {
         letraAtual.nextElementSibling.classList.add(classeAtual);

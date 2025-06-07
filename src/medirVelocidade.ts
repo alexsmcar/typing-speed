@@ -24,6 +24,7 @@ export function medirVelocidade() {
   const values: Resultado = {
     acertos: 0,
     erros: 0,
+    totalTeclasPressionadas: 0
   };
 
   typingListener = (event: KeyboardEvent) =>
@@ -51,13 +52,14 @@ function handleBackspace(
   tecla: string,
   letra: Element,
   indexes: ElementIndex,
-  listaPalavras: NodeListOf<Element>
+  listaPalavras: NodeListOf<Element>,
+  resultado: Resultado
 ): boolean {
   if (tecla === "Backspace") {
     if (!(indexes.palavra === 0 && indexes.letra === 0)) {
       letra.classList.remove(classeAtual);
       if (letra.previousElementSibling) {
-        voltarLetra(letra.previousElementSibling);
+        voltarLetra(letra.previousElementSibling, resultado);
         indexes.letra--;
       } else {
         const previusWord =
@@ -65,7 +67,7 @@ function handleBackspace(
 
         if (previusWord.length) {
           const previusLetra = previusWord[previusWord.length - 1];
-          voltarLetra(previusLetra);
+          voltarLetra(previusLetra, resultado);
           indexes.palavra--;
           indexes.letra = previusWord.length - 1;
         }
@@ -76,7 +78,11 @@ function handleBackspace(
   return false;
 }
 
-function voltarLetra(el: Element): void {
+
+function voltarLetra(el: Element, resultado: Resultado): void {
+  if (el.classList.contains(classeAcerto)) resultado.acertos--;
+  else if (el.classList.contains(classeErro)) resultado.erros--;
+
   el.classList.remove(classeAcerto, classeErro);
   el.classList.add(classeAtual);
 }
@@ -94,7 +100,7 @@ function handleTyping(
   event: KeyboardEvent,
   listaPalavras: NodeListOf<Element>,
   index: ElementIndex,
-  teste: Resultado
+  resultado: Resultado
 ) {
   const listaLetras =
     listaPalavras[index.palavra].querySelectorAll(".letraText");
@@ -102,19 +108,20 @@ function handleTyping(
 
   if (LetrasIgnorar.has(event.key)) return;
 
-  if (handleBackspace(event.code, letraAtual, index, listaPalavras)) return;
+  if (handleBackspace(event.code, letraAtual, index, listaPalavras, resultado)) return;
 
   letraAtual.classList.remove(classeAtual);
-
+  resultado.totalTeclasPressionadas++;
+  
   if (
     letraAtual.innerHTML === event.key ||
     (event.code === "Space" && letraAtual.innerHTML === "&nbsp;")
   ) {
     verificarLetra(letraAtual, classeErro, classeAcerto);
-    teste.acertos++;
+    resultado.acertos++;
   } else {
     verificarLetra(letraAtual, classeAcerto, classeErro);
-    teste.erros++;
+    resultado.erros++;
   }
   if (letraAtual.nextElementSibling) {
     letraAtual.nextElementSibling.classList.add(classeAtual);

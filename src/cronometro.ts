@@ -2,7 +2,7 @@ import mostrarResultado from "./mostarResultado.js";
 import { removeTypingListener } from "./medirVelocidade.js";
 
 
-export default function iniciarCronometro(element: HTMLElement, teste: Resultado) {
+export default function iniciarCronometro(element: HTMLElement, resultado: Resultado) {
   const tempo = Number(element.innerText.replace(":", "")) * 600;
   let tempoAtual = tempo;
 
@@ -10,7 +10,7 @@ export default function iniciarCronometro(element: HTMLElement, teste: Resultado
     if (tempoAtual === 1000) {
         clearInterval(relogio);
         removeTypingListener();
-        mostrarResultado(teste);
+        mostrarResultado(resultado);
     }
     tempoAtual -= 1000;
     element.innerText = msToMinutos(tempoAtual);

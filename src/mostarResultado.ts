@@ -1,27 +1,32 @@
-export default function mostrarResultado(teste: Resultado): void {
-  const container = document.getElementById("textContainer");
-  const resultados = realizarContagem();
-  const wpm = (resultados.acertos + resultados.erros) / 5;
-  console.log("acertos: ", teste.acertos, "erros: ", teste.erros)
-  console.log("acertos: ", resultados.acertos, "erros: ", resultados.erros)
-  console.log(wpm)
+export default function mostrarResultado({
+  acertos,
+  erros,
+  totalTeclasPressionadas,
+}: Resultado): void {
+  const wpm = acertos / 5;
+  const precisao = ((acertos / totalTeclasPressionadas) * 100).toFixed(2);
+  console.log("acertos: ", acertos, "erros: ", erros);
+  console.log("total teclas: ", totalTeclasPressionadas);
+  console.log("precisao: ", precisao);
+  console.log("wpm: ", wpm);
+  // console.log(wpm)
 }
 
-function realizarContagem() {
-  const resultado: Resultado = {
-    acertos: 0,
-    erros: 0,
-  };
-  const palavras = document.querySelectorAll(".palavra");
-  palavras?.forEach((palavra) => {
-    const letras = palavra.querySelectorAll(".letraText");
-    letras?.forEach((letra) => {
-      if (letra.classList.contains("wrongLetra")) {
-        resultado.erros++;
-      } else if (letra.classList.contains("rightLetra")) {
-        resultado.acertos++;
-      }
-    });
-  });
-  return resultado
-}
+// function realizarContagem() {
+//   const resultado: Resultado = {
+//     acertos: 0,
+//     erros: 0,
+//   };
+//   const palavras = document.querySelectorAll(".palavra");
+//   palavras?.forEach((palavra) => {
+//     const letras = palavra.querySelectorAll(".letraText");
+//     letras?.forEach((letra) => {
+//       if (letra.classList.contains("wrongLetra")) {
+//         resultado.erros++;
+//       } else if (letra.classList.contains("rightLetra")) {
+//         resultado.acertos++;
+//       }
+//     });
+//   });
+//   return resultado
+// }

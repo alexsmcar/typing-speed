@@ -1,7 +1,6 @@
 .teste {
   /* background-color: blue; */
-
-max-width: 900px;
+  max-width: 800px;
   height: 400px;
   margin: 0 auto;
   border-radius: 8px;
