@@ -20,13 +20,9 @@
 }
 
 #reset {
-    transition: .3s;
     cursor: pointer;
 }
 
-#reset:hover {
-    transform: rotate(270deg);
-}
 
 .tempo {
     display: flex;

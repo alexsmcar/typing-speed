@@ -14,7 +14,7 @@ export default function iniciarCronometro(element: HTMLElement, resultado: Resul
     }
     tempoAtual -= 1000;
     element.innerText = msToMinutos(tempoAtual);
-  }, 100);
+  }, 1000);
 }
 
 function msToMinutos(ms: number): string {
